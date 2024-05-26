@@ -161,5 +161,8 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-#Plugin for test with sqlite
+# Plugin for test with sqlite
 plugins/spatialite
+
+# Base folder for project
+base_project
