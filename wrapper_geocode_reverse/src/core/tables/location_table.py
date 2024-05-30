@@ -23,6 +23,9 @@ class LocationTable:
     )
     longitude: Mapped[float]
     latitude: Mapped[float]
+
+    # Column definition to save location latitude and longitude
+    # and used in specific functions for distance calculation
     latitude_longitude: Mapped[WKBElement] = mapped_column(
         Geometry(
             geometry_type='POINT',
