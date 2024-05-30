@@ -1,6 +1,8 @@
 from sqlalchemy import select
 
-from wrapper_geocode_reverse.src.tables.location_table import LocationTable
+from wrapper_geocode_reverse.src.core.tables.location.location_table import (
+    LocationTable,
+)
 
 
 def test_create_location(session):

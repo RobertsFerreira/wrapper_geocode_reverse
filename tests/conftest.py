@@ -8,7 +8,9 @@ from sqlalchemy.event import listen
 from sqlalchemy.orm import Session
 
 from wrapper_geocode_reverse.app import app
-from wrapper_geocode_reverse.src.tables.location_table import table_registry
+from wrapper_geocode_reverse.src.core.tables.default_table import (
+    table_registry,
+)
 
 
 @pytest.fixture()
@@ -20,7 +22,7 @@ def client():
 def session():
     engine = create_engine('sqlite:///:memory:')
 
-    base_path = "E:\\ProjetosPY\\wrapper_geocode_reverse"
+    base_path = 'E:\\ProjetosPY\\wrapper_geocode_reverse'
     path = f'{base_path}\\plugins\\spatialite\\mod_spatialite.dll'
 
     os.environ['SPATIALITE_LIBRARY_PATH'] = path
