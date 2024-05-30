@@ -166,3 +166,6 @@ plugins/spatialite
 
 # Base folder for project
 base_project
+
+# Database
+database.db
