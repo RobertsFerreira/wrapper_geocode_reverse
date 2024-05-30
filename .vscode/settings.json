@@ -7,6 +7,7 @@
         "Geocode",
         "Mirahmedov",
         "onupdate",
+        "pydantic",
         "spatialite",
         "sqlalchemy",
         "sqlite"
