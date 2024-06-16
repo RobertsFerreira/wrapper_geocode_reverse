@@ -3,13 +3,16 @@ import os
 import pytest
 from fastapi.testclient import TestClient
 from geoalchemy2 import load_spatialite
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, select
 from sqlalchemy.event import listen
 from sqlalchemy.orm import Session
 
 from wrapper_geocode_reverse.app import app
 from wrapper_geocode_reverse.src.core.tables.default_table import (
     table_registry,
+)
+from wrapper_geocode_reverse.src.core.tables.location_table import (
+    LocationTable,
 )
 
 
@@ -34,3 +37,27 @@ def session():
         yield session
 
     table_registry.metadata.drop_all(engine)
+
+
+@pytest.fixture()
+def fixture_location_create(session):
+    latitude, longitude = 1, 1
+    point = f'POINT({latitude} {longitude})'
+    new_location = LocationTable(
+        address='address',
+        latitude=1.0,
+        longitude=1.0,
+        city='city',
+        state='state',
+        country='country',
+        postal_code='postal_code',
+        latitude_longitude=point,  # type: ignore
+    )
+
+    session.add(new_location)
+    session.commit()
+
+    location = session.scalar(
+        select(LocationTable).where(LocationTable.latitude_longitude == point)
+    )
+    return location
