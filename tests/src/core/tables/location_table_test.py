@@ -1,6 +1,6 @@
 from sqlalchemy import select
 
-from wrapper_geocode_reverse.src.core.tables.location.location_table import (
+from wrapper_geocode_reverse.src.core.tables.location_table import (
     LocationTable,
 )
 
