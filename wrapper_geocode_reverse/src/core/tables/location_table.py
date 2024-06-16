@@ -2,7 +2,7 @@ from geoalchemy2 import Geometry, WKBElement
 from sqlalchemy.orm import Mapped, mapped_column
 
 from wrapper_geocode_reverse.src.core.tables.default_table import (
-    DefaultTable,
+    DefaultTable
 )
 
 

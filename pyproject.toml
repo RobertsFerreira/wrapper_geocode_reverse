@@ -12,6 +12,7 @@ sqlalchemy = "^2.0.30"
 pydantic = "^2.7.1"
 pydantic-settings = "^2.2.1"
 geoalchemy2 = "^0.15.1"
+alembic = "^1.13.1"
 
 
 [tool.poetry.group.dev.dependencies]
