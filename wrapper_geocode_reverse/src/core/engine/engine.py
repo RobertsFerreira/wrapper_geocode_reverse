@@ -1,4 +1,4 @@
-from pytest import Session
+from sqlalchemy.orm import Session
 from sqlalchemy import create_engine
 
 from wrapper_geocode_reverse.src.core.settings.settings import Settings
