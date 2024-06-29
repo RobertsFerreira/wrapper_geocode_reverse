@@ -1,14 +1,26 @@
+from datetime import datetime
+
 from geoalchemy2 import Geometry, WKBElement
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy import func
+from sqlalchemy.orm import Mapped, mapped_column, registry
 
-from wrapper_geocode_reverse.src.core.tables.default_table import (
-    DefaultTable
-)
+table_registry = registry()
 
 
-class LocationTable(DefaultTable):
+@table_registry.mapped_as_dataclass
+class LocationTable:
     __tablename__ = 'location'
 
+    id: Mapped[int] = mapped_column(init=False, primary_key=True)
+    created_at: Mapped[datetime] = mapped_column(
+        init=False,
+        server_default=func.now(),
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        init=False,
+        server_default=func.now(),
+        onupdate=func.now(),
+    )
     longitude: Mapped[float]
     latitude: Mapped[float]
 
