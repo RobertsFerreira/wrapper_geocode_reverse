@@ -5,6 +5,7 @@
         "fastapi",
         "geoalchemy",
         "Geocode",
+        "httpx",
         "Mirahmedov",
         "onupdate",
         "pydantic",
