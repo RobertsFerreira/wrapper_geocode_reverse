@@ -1,6 +1,6 @@
-import requests
+from httpx import Client
 
 
 def get_client():
-    with requests.Session() as session:
+    with Client() as session:
         yield session
