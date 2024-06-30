@@ -8,7 +8,7 @@ from sqlalchemy.event import listen
 from sqlalchemy.orm import Session
 
 from wrapper_geocode_reverse.app import app
-from wrapper_geocode_reverse.src.core.tables.location_table import (
+from wrapper_geocode_reverse.src.location.tables.location_table import (
     LocationTable,
     table_registry,
 )
