@@ -9,3 +9,5 @@ class Settings(BaseSettings):
 
     DATABASE_URL: str
     SPATIALITE_DLL_URL: str
+    OPEN_ROUTER_TOKEN: str
+    OPEN_ROUTER_GEOCODE_REVERSE_URL: str
