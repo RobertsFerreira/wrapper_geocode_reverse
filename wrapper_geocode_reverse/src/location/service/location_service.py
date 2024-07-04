@@ -1,10 +1,11 @@
 from http import HTTPStatus
 from typing import Any, List
 
-from fastapi import Depends
 from httpx import AsyncClient
 
-from wrapper_geocode_reverse.src.core.settings.settings import Settings
+from wrapper_geocode_reverse.src.core.settings.settings import (
+    Settings,
+)
 from wrapper_geocode_reverse.src.location.schemas.location_schema import (
     LocationServiceModel,
 )
@@ -16,7 +17,7 @@ class LocationService:
     BASE_URL_SERVICE: str
     API_KEY: str
 
-    def __init__(self, settings=Depends(Settings())):  # type: ignore
+    def __init__(self, settings: Settings):  # type: ignore
         self.settings = settings
         self.BASE_URL_SERVICE = self.settings.OPEN_ROUTER_GEOCODE_REVERSE_URL
         self.API_KEY = self.settings.OPEN_ROUTER_TOKEN
@@ -26,6 +27,7 @@ class LocationService:
             'api_key': self.API_KEY,
             'point.lon': longitude,
             'point.lat': latitude,
+            'size': 1,
         }
 
         async with AsyncClient(base_url=self.BASE_URL_SERVICE) as client:
