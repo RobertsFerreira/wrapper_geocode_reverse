@@ -9,6 +9,7 @@
         "Mirahmedov",
         "onupdate",
         "pydantic",
+        "respx",
         "spatialite",
         "sqlalchemy",
         "sqlite"
