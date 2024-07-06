@@ -24,5 +24,6 @@ class Settings(BaseSettings):
 
 def get_settings():
     settings = Settings()  # type: ignore
-    print(settings)
+    # Todo: change print for logging
+    # print(settings)
     return settings
