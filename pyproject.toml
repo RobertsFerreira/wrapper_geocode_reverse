@@ -27,7 +27,11 @@ pytest-asyncio = "^0.23.7"
 
 [tool.ruff]
 line-length = 79
-extend-exclude = ['migrations', 'base_project']
+extend-exclude = [
+    'migrations', 
+    'base_project',
+    'tests\src\utils\data\'
+]
 
 [tool.ruff.lint]
 preview = true

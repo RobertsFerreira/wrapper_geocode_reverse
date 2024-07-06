@@ -1,64 +1,78 @@
 fake_location = {
-    'geocoding': {
-        'version': '0.2',
-        'attribution': 'https://openrouteservice.org/terms-of-service/#attribution-geocode',
-        'query': {
-            'size': 1,
-            'private': False,
-            'point.lat': 48.858268,
-            'point.lon': 2.294471,
-            'boundary.circle.lat': 48.858268,
-            'boundary.circle.lon': 2.294471,
-            'lang': {
-                'name': 'Portuguese',
-                'iso6391': 'pt',
-                'iso6393': 'por',
-                'via': 'header',
-                'defaulted': False,
+    "geocoding": {
+        "version": "0.2",
+        "attribution": "https://openrouteservice.org/terms-of-service/#attribution-geocode",
+        "query": {
+            "size": 1,
+            "private": False,
+            "point.lat": -21.174199,
+            "point.lon": -43.0244651,
+            "boundary.circle.lat": -21.174199,
+            "boundary.circle.lon": -43.0244651,
+            "lang": {
+                "name": "Portuguese",
+                "iso6391": "pt",
+                "iso6393": "por",
+                "via": "header",
+                "defaulted": False
             },
-            'querySize': 2,
+            "querySize": 2
         },
-        'engine': {'name': 'Pelias', 'author': 'Mapzen', 'version': '1.0'},
-        'timestamp': 1720057821871,
+        "engine": {
+            "name": "Pelias",
+            "author": "Mapzen",
+            "version": "1.0"
+        },
+        "timestamp": 1720299241567
     },
-    'type': 'FeatureCollection',
-    'features': [
+    "type": "FeatureCollection",
+    "features": [
         {
-            'type': 'Feature',
-            'geometry': {'type': 'Point', 'coordinates': [2.2945, 48.85826]},
-            'properties': {
-                'id': 'relation/4114842',
-                'gid': 'openstreetmap:venue:relation/4114842',
-                'layer': 'venue',
-                'source': 'openstreetmap',
-                'source_id': 'relation/4114842',
-                'name': 'Tour Eiffel 2e étage',
-                'confidence': 0.9,
-                'distance': 0.002,
-                'accuracy': 'point',
-                'country': 'França',
-                'country_gid': 'whosonfirst:country:85633147',
-                'country_a': 'FRA',
-                'macroregion': 'Ilha de França',
-                'macroregion_gid': 'whosonfirst:macroregion:404227465',
-                'macroregion_a': 'IF',
-                'region': 'Paris',
-                'region_gid': 'whosonfirst:region:85683497',
-                'region_a': 'VP',
-                'localadmin': 'Paris',
-                'localadmin_gid': 'whosonfirst:localadmin:1159322569',
-                'locality': 'Paris',
-                'locality_gid': 'whosonfirst:locality:101751119',
-                'borough': '7th Arrondissement',
-                'borough_gid': 'whosonfirst:borough:1158894245',
-                'neighbourhood': 'Gros Caillou',
-                'neighbourhood_gid': 'whosonfirst:neighbourhood:85873841',
-                'continent': 'Europa',
-                'continent_gid': 'whosonfirst:continent:102191581',
-                'label': 'Tour Eiffel 2e étage, Paris, França',
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -43.024593,
+                    -21.174267
+                ]
             },
-            'bbox': [2.2941111, 48.8580066, 2.2948853, 48.8585159],
+            "properties": {
+                "id": "br/mg/statewide-addresses-state:eeb6ed6414a76ff5",
+                "gid": "openaddresses:address:br/mg/statewide-addresses-state:eeb6ed6414a76ff5",
+                "layer": "address",
+                "source": "openaddresses",
+                "source_id": "br/mg/statewide-addresses-state:eeb6ed6414a76ff5",
+                "name": "Rua Antonio Machado Sobrinho 226",
+                "housenumber": "226",
+                "street": "Rua Antonio Machado Sobrinho",
+                "postalcode": "36512-000",
+                "confidence": 0.8,
+                "distance": 0.015,
+                "accuracy": "point",
+                "country": "Brasil",
+                "country_gid": "whosonfirst:country:85633009",
+                "country_a": "BRA",
+                "macroregion": "Sudeste",
+                "macroregion_gid": "whosonfirst:macroregion:1511777411",
+                "region": "Minas Gerais",
+                "region_gid": "whosonfirst:region:85681941",
+                "region_a": "MG",
+                "county": "Tocantins",
+                "county_gid": "whosonfirst:county:102055069",
+                "localadmin": "Tocantins",
+                "localadmin_gid": "whosonfirst:localadmin:404558605",
+                "locality": "Tocantins",
+                "locality_gid": "whosonfirst:locality:101953329",
+                "continent": "América do Sul",
+                "continent_gid": "whosonfirst:continent:102191577",
+                "label": "Rua Antonio Machado Sobrinho 226, Tocantins, MG, Brasil"
+            }
         }
     ],
-    'bbox': [2.2941111, 48.8580066, 2.2948853, 48.8585159],
+    "bbox": [
+        -43.024593,
+        -21.174267,
+        -43.024593,
+        -21.174267
+    ]
 }
