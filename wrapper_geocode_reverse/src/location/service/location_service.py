@@ -22,13 +22,19 @@ class LocationService:
         self.BASE_URL_SERVICE = self.settings.OPEN_ROUTER_GEOCODE_REVERSE_URL
         self.API_KEY = self.settings.OPEN_ROUTER_TOKEN
 
-    async def reverse_geocode(self, latitude: str, longitude: str):
+    async def reverse_geocode(
+        self,
+        latitude: str,
+        longitude: str,
+    ) -> list[LocationServiceModel]:
         params = {
             'api_key': self.API_KEY,
             'point.lon': longitude,
             'point.lat': latitude,
             'size': 1,
         }
+
+        locations: list[LocationServiceModel] = []
 
         async with AsyncClient(base_url=self.BASE_URL_SERVICE) as client:
             response = await client.get(
@@ -46,8 +52,29 @@ class LocationService:
                 features: List[dict[str, Any]] = open_router_response[
                     'features'
                 ]
-                locations = [
-                    LocationServiceModel.model_validate(feature)
-                    for feature in features
-                ]
-                return locations[0].city
+
+                for feature in features:
+                    if 'properties' not in feature.keys():
+                        raise Exception('Error get proprieties of location')
+                    propriety_location = feature.get('properties')
+
+                    location = LocationServiceModel.model_validate(
+                        propriety_location
+                    )
+
+                    geometry = feature.get('geometry')
+                    if geometry is None:
+                        raise Exception('Error get geometry of location')
+                    location_coordinates = geometry.get('coordinates')
+                    if not location_coordinates:
+                        raise Exception('Error get coordinates of location')
+
+                    location = location.model_copy(
+                        update={
+                            'longitude': location_coordinates[0],
+                            'latitude': location_coordinates[1],
+                        }
+                    )
+
+                    locations.append(location)
+            return locations
