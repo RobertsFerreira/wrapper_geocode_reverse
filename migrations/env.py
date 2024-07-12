@@ -8,11 +8,8 @@ from alembic import context
 from wrapper_geocode_reverse.src.core.settings.settings import (
     Settings
 )
-from wrapper_geocode_reverse.src.core.tables.default_table import (
-    Base
-)
-from wrapper_geocode_reverse.src.core.tables.location_table import (
-    LocationTable
+from wrapper_geocode_reverse.src.location.tables.location_table import (
+    LocationTable, table_registry
 )
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -30,7 +27,7 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-target_metadata = Base.metadata
+target_metadata = table_registry.metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:

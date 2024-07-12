@@ -7,6 +7,7 @@
         "Geocode",
         "housenumber",
         "httpx",
+        "levelname",
         "Mirahmedov",
         "onupdate",
         "postalcode",
@@ -15,5 +16,8 @@
         "spatialite",
         "sqlalchemy",
         "sqlite"
+    ],
+    "python.analysis.extraPaths": [
+        "./wrapper_geocode_reverse/src/core/logger"
     ]
 }

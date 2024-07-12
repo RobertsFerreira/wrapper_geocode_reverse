@@ -9,6 +9,7 @@ from wrapper_geocode_reverse.src.core.settings.settings import (
 from wrapper_geocode_reverse.src.location.schemas.location_schema import (
     LocationServiceModel,
 )
+from wrapper_geocode_reverse.src.core.logger.logger import logger
 
 
 class LocationService:
@@ -21,6 +22,7 @@ class LocationService:
         self.settings = settings
         self.BASE_URL_SERVICE = self.settings.OPEN_ROUTER_GEOCODE_REVERSE_URL
         self.API_KEY = self.settings.OPEN_ROUTER_TOKEN
+        self.logger = logger.getLogger(__name__)
 
     async def reverse_geocode(
         self,
@@ -48,33 +50,33 @@ class LocationService:
                     }'
                 )
             open_router_response: dict[str, Any] = response.json()
-            if 'features' in open_router_response.keys():
-                features: List[dict[str, Any]] = open_router_response[
-                    'features'
-                ]
+            if 'features' not in open_router_response.keys():
+                self.logger.error('Error get features from OpenRouter')
+            features: List[dict[str, Any]] = open_router_response[
+                'features'
+            ]
+            for feature in features:
+                if 'properties' not in feature.keys():
+                    raise Exception('Error get proprieties of location')
+                propriety_location = feature.get('properties')
 
-                for feature in features:
-                    if 'properties' not in feature.keys():
-                        raise Exception('Error get proprieties of location')
-                    propriety_location = feature.get('properties')
+                location = LocationServiceModel.model_validate(
+                    propriety_location
+                )
 
-                    location = LocationServiceModel.model_validate(
-                        propriety_location
-                    )
+                geometry = feature.get('geometry')
+                if geometry is None:
+                    raise Exception('Error get geometry of location')
+                location_coordinates = geometry.get('coordinates')
+                if not location_coordinates:
+                    raise Exception('Error get coordinates of location')
 
-                    geometry = feature.get('geometry')
-                    if geometry is None:
-                        raise Exception('Error get geometry of location')
-                    location_coordinates = geometry.get('coordinates')
-                    if not location_coordinates:
-                        raise Exception('Error get coordinates of location')
+                location = location.model_copy(
+                    update={
+                        'longitude': location_coordinates[0],
+                        'latitude': location_coordinates[1],
+                    }
+                )
 
-                    location = location.model_copy(
-                        update={
-                            'longitude': location_coordinates[0],
-                            'latitude': location_coordinates[1],
-                        }
-                    )
-
-                    locations.append(location)
+                locations.append(location)
             return locations
