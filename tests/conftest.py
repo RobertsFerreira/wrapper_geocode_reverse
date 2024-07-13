@@ -3,11 +3,13 @@ import os
 import pytest
 from fastapi.testclient import TestClient
 from geoalchemy2 import load_spatialite
+from pydantic_extra_types.coordinate import Coordinate, Latitude, Longitude
 from sqlalchemy import create_engine, select
 from sqlalchemy.event import listen
 from sqlalchemy.orm import Session
 
 from wrapper_geocode_reverse.app import app
+from wrapper_geocode_reverse.src.core.settings.settings import Settings
 from wrapper_geocode_reverse.src.location.tables.location_table import (
     LocationTable,
     table_registry,
@@ -17,6 +19,27 @@ from wrapper_geocode_reverse.src.location.tables.location_table import (
 @pytest.fixture()
 def client():
     return TestClient(app)
+
+
+def settings():
+    return Settings()  # type: ignore
+
+
+@pytest.fixture()
+def coordinate():
+    return Coordinate(
+        latitude=Latitude(-21.174267), longitude=Longitude(-43.024593)
+    )
+
+
+@pytest.fixture()
+def params_test_location(settings: Settings, coordinate: Coordinate):
+    return {
+        'api_key': settings.OPEN_ROUTER_TOKEN,
+        'point.lon': coordinate.longitude,
+        'point.lat': coordinate.latitude,
+        'size': 1,
+    }
 
 
 @pytest.fixture()

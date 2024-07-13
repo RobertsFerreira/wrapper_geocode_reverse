@@ -1,4 +1,5 @@
 from pydantic import BaseModel, Field
+from pydantic_extra_types.coordinate import Latitude, Longitude
 
 
 class LocationServiceModel(BaseModel):
@@ -12,5 +13,5 @@ class LocationServiceModel(BaseModel):
     postal_code: str = Field(alias='postalcode', default='')
     distance: float
     confidence: float
-    latitude: float = Field(default=0)
-    longitude: float = Field(default=0)
+    latitude: Latitude = Field(default=0)
+    longitude: Longitude = Field(default=0)

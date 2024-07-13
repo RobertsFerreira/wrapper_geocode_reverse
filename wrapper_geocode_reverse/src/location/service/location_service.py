@@ -2,14 +2,15 @@ from http import HTTPStatus
 from typing import Any, List
 
 from httpx import AsyncClient
+from pydantic_extra_types.coordinate import Coordinate
 
+from wrapper_geocode_reverse.src.core.logger.logger import logger
 from wrapper_geocode_reverse.src.core.settings.settings import (
     Settings,
 )
 from wrapper_geocode_reverse.src.location.schemas.location_schema import (
     LocationServiceModel,
 )
-from wrapper_geocode_reverse.src.core.logger.logger import logger
 
 
 class LocationService:
@@ -26,14 +27,14 @@ class LocationService:
 
     async def reverse_geocode(
         self,
-        latitude: str,
-        longitude: str,
+        coordinate: Coordinate,
+        number_of_points: int = 1,
     ) -> list[LocationServiceModel]:
         params = {
             'api_key': self.API_KEY,
-            'point.lon': longitude,
-            'point.lat': latitude,
-            'size': 1,
+            'point.lon': coordinate.longitude,
+            'point.lat': coordinate.longitude,
+            'size': number_of_points,
         }
 
         locations: list[LocationServiceModel] = []
@@ -52,9 +53,7 @@ class LocationService:
             open_router_response: dict[str, Any] = response.json()
             if 'features' not in open_router_response.keys():
                 self.logger.error('Error get features from OpenRouter')
-            features: List[dict[str, Any]] = open_router_response[
-                'features'
-            ]
+            features: List[dict[str, Any]] = open_router_response['features']
             for feature in features:
                 if 'properties' not in feature.keys():
                     raise Exception('Error get proprieties of location')
@@ -80,3 +79,7 @@ class LocationService:
 
                 locations.append(location)
             return locations
+
+
+def get_service():
+    return LocationService(Settings())  # type: ignore
