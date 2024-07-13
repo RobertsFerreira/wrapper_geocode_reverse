@@ -14,6 +14,7 @@ pydantic-settings = "^2.2.1"
 geoalchemy2 = "^0.15.1"
 alembic = "^1.13.1"
 requests = "^2.32.3"
+pydantic-extra-types = "^2.9.0"
 
 
 [tool.poetry.group.dev.dependencies]
