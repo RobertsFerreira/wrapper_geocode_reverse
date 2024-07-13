@@ -12,9 +12,9 @@ location_router = APIRouter()
 @location_router.get('/')
 async def get_location_by_lat_long(
     lat: Latitude,
-    lon: Longitude,
+    long: Longitude,
     service: LocationService = Depends(get_service),
 ):
-    coordinate = Coordinate(lat, lon)
+    coordinate = Coordinate(lat, long)
     result = await service.reverse_geocode(coordinate=coordinate)
     return result

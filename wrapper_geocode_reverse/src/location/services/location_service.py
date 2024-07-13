@@ -33,7 +33,7 @@ class LocationService:
         params = {
             'api_key': self.API_KEY,
             'point.lon': coordinate.longitude,
-            'point.lat': coordinate.longitude,
+            'point.lat': coordinate.latitude,
             'size': number_of_points,
         }
 
