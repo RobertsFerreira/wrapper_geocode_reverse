@@ -1,6 +1,11 @@
+from typing import List
+
 from fastapi import APIRouter, Depends
 from pydantic_extra_types.coordinate import Coordinate, Latitude, Longitude
 
+from wrapper_geocode_reverse.src.location.schemas.location_schema import (
+    Location,
+)
 from wrapper_geocode_reverse.src.location.services.location_service import (
     LocationService,
     get_service,
@@ -9,7 +14,7 @@ from wrapper_geocode_reverse.src.location.services.location_service import (
 location_router = APIRouter()
 
 
-@location_router.get('/')
+@location_router.get('/', response_model=List[Location])
 async def get_location_by_lat_long(
     lat: Latitude,
     long: Longitude,
@@ -22,4 +27,6 @@ async def get_location_by_lat_long(
         number_of_points=number_points,
     )
 
-    return result
+    location = [Location.model_validate(loc.model_dump()) for loc in result]
+
+    return location

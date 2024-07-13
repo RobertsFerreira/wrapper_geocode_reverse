@@ -15,3 +15,18 @@ class LocationServiceModel(BaseModel):
     confidence: float
     latitude: Latitude = Field(default=0)
     longitude: Longitude = Field(default=0)
+
+
+class Location(BaseModel):
+    address: str
+    house_number: str
+    city: str
+    state: str
+    abbreviation_state: str
+    country: str
+    abbreviation_country: str
+    postal_code: str
+    distance: float
+    confidence: float
+    latitude: Latitude
+    longitude: Longitude
