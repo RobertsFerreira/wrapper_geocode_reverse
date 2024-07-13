@@ -13,8 +13,13 @@ location_router = APIRouter()
 async def get_location_by_lat_long(
     lat: Latitude,
     long: Longitude,
+    number_points: int = 1,
     service: LocationService = Depends(get_service),
 ):
     coordinate = Coordinate(lat, long)
-    result = await service.reverse_geocode(coordinate=coordinate)
+    result = await service.reverse_geocode(
+        coordinate=coordinate,
+        number_of_points=number_points,
+    )
+
     return result
