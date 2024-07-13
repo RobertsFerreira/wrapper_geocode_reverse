@@ -8,7 +8,7 @@ def configure_log():
     path = Path(path_log)
 
     if not path.exists():
-        path.mkdir()
+        path.mkdir(parents=True)
 
     logging.basicConfig(
         level=logging.DEBUG,
