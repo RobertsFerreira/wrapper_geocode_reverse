@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from pydantic_extra_types.coordinate import Coordinate, Latitude, Longitude
 
-from wrapper_geocode_reverse.src.location.service.location_service import (
+from wrapper_geocode_reverse.src.location.services.location_service import (
     LocationService,
     get_service,
 )

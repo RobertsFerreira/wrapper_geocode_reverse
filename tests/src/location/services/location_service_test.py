@@ -11,7 +11,7 @@ from wrapper_geocode_reverse.src.core.settings.settings import (
     Settings,
     get_settings,
 )
-from wrapper_geocode_reverse.src.location.service.location_service import (
+from wrapper_geocode_reverse.src.location.services.location_service import (
     LocationService,
 )
 
