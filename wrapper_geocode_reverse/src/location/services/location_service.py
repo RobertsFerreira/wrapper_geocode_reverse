@@ -4,10 +4,7 @@ from typing import Any, List
 from httpx import AsyncClient
 from pydantic_extra_types.coordinate import Coordinate
 
-from wrapper_geocode_reverse.src.core.logger.logger import logger
-from wrapper_geocode_reverse.src.core.settings.settings import (
-    Settings,
-)
+from wrapper_geocode_reverse.src.core import Settings, logger
 from wrapper_geocode_reverse.src.location.schemas.location_schema import (
     LocationServiceModel,
 )

@@ -9,8 +9,8 @@ from sqlalchemy.event import listen
 from sqlalchemy.orm import Session
 
 from wrapper_geocode_reverse.app import app
-from wrapper_geocode_reverse.src.core.settings.settings import Settings
-from wrapper_geocode_reverse.src.location.tables.location_table import (
+from wrapper_geocode_reverse.src.core import Settings
+from wrapper_geocode_reverse.src.location import (
     LocationTable,
     table_registry,
 )
@@ -74,6 +74,11 @@ def fixture_location_create(session):
         country='country',
         postal_code='postal_code',
         latitude_longitude=point,  # type: ignore
+        abbreviation_state='abbreviation_state',
+        abbreviation_country='abbreviation_country',
+        confidence=0.0,
+        house_number='house_number',
+        distance=0.0,
     )
 
     session.add(new_location)
