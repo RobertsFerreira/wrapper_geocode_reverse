@@ -1,8 +1,8 @@
 from fastapi import APIRouter
+
 from wrapper_geocode_reverse.src.location.routers.location_router import (
     location_router,
 )
-
 
 base_router = APIRouter(prefix='/v1')
 
