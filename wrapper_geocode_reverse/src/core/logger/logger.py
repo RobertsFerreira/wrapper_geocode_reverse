@@ -14,7 +14,7 @@ def configure_log():
         level=logging.DEBUG,
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
         filename=f'{path_log}\\wrapper_geocode.log',
-        filemode='a'
+        filemode='a',
     )
 
     return logging
