@@ -21,6 +21,7 @@ def client():
     return TestClient(app)
 
 
+@pytest.fixture()
 def settings():
     return Settings()  # type: ignore
 
