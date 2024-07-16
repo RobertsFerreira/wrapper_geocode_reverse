@@ -5,12 +5,9 @@ from sqlalchemy import pool
 
 from alembic import context
 
-from wrapper_geocode_reverse.src.core.settings.settings import (
-    Settings
-)
-from wrapper_geocode_reverse.src.location.tables.location_table import (
-    LocationTable, table_registry
-)
+from wrapper_geocode_reverse.src.core import Settings
+from wrapper_geocode_reverse.src.location import table_registry
+
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
@@ -77,7 +74,7 @@ def run_migrations_online() -> None:
             connection=connection, target_metadata=target_metadata
         )
 
-        with context.begin_transaction() as transaction:
+        with context.begin_transaction():
             context.run_migrations()
 
 
