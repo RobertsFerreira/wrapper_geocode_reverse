@@ -9,7 +9,7 @@ from sqlalchemy.event import listen
 from sqlalchemy.orm import Session
 
 from wrapper_geocode_reverse.app import app
-from wrapper_geocode_reverse.src.core import Settings
+from wrapper_geocode_reverse.src.core import Settings, get_session
 from wrapper_geocode_reverse.src.location import (
     LocationTable,
     table_registry,
@@ -18,7 +18,13 @@ from wrapper_geocode_reverse.src.location import (
 
 @pytest.fixture()
 def client():
-    return TestClient(app)
+    def get_session_override():
+        return session
+
+    with TestClient(app) as client:
+        app.dependency_overrides[get_session] = get_session_override
+        yield client
+    app.dependency_overrides.clear()
 
 
 @pytest.fixture()
