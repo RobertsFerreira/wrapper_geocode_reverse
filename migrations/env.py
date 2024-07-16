@@ -6,13 +6,13 @@ from sqlalchemy import pool
 from alembic import context
 
 from wrapper_geocode_reverse.src.core import Settings
-from wrapper_geocode_reverse.src.location import table_registry
+from wrapper_geocode_reverse.src.location import table_registry, LocationTable
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
 config.set_main_option(
-    'sqlalchemy.url', Settings().DATABASE_URL  # type: ignore
+    'sqlalchemy.url', Settings().DATABASE_URL,  # type: ignore
 )
 
 # Interpret the config file for Python logging.
