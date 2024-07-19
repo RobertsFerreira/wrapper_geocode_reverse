@@ -1,9 +1,9 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
-from wrapper_geocode_reverse.src.core.settings.settings import Settings
+from wrapper_geocode_reverse.src.core.settings.settings import get_settings
 
-settings = Settings()  # type: ignore
+settings = get_settings()  # type: ignore
 
 
 engine = create_engine(settings.DATABASE_URL)

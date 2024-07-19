@@ -4,7 +4,7 @@ import pytest
 from fastapi.testclient import TestClient
 from geoalchemy2 import load_spatialite
 from pydantic_extra_types.coordinate import Coordinate, Latitude, Longitude
-from sqlalchemy import create_engine, select
+from sqlalchemy import StaticPool, create_engine, select
 from sqlalchemy.event import listen
 from sqlalchemy.orm import Session
 
@@ -51,7 +51,11 @@ def params_test_location(settings: Settings, coordinate: Coordinate):
 
 @pytest.fixture()
 def session():
-    engine = create_engine('sqlite:///:memory:')
+    engine = create_engine(
+        'sqlite:///:memory:',
+        connect_args={'check_same_thread': False},
+        poolclass=StaticPool,
+    )
 
     base_path = 'E:\\ProjetosPY\\wrapper_geocode_reverse'
     path = f'{base_path}\\plugins\\spatialite\\mod_spatialite.dll'
