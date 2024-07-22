@@ -44,5 +44,5 @@ class LocationTable:
     country: Mapped[str]
     abbreviation_country: Mapped[str]
     postal_code: Mapped[str]
-    distance: float
-    confidence: float
+    distance: Mapped[float]
+    confidence: Mapped[float]

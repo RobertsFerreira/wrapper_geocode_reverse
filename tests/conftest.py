@@ -17,7 +17,7 @@ from wrapper_geocode_reverse.src.location import (
 
 
 @pytest.fixture()
-def client():
+def client(session):
     def get_session_override():
         return session
 
