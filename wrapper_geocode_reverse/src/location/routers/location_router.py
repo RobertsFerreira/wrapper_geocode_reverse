@@ -39,7 +39,7 @@ async def get_location_by_lat_long(
     km_distance = 1000 * km_within
 
     point = ST_GeogFromText(
-        f"POINT({coordinate.latitude}, {coordinate.longitude})", srid=4326
+        f"POINT({coordinate.latitude} {coordinate.longitude})", srid=4326
     )
 
     locations = session.scalars(
