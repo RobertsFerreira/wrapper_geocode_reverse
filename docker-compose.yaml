@@ -1,0 +1,14 @@
+services:
+  db_geocode_reverse:
+    image: postgis/postgis
+    volumes:
+      - pgdata:/var/lib/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: wrap_geocode_reverse
+      POSTGRES_PASSWORD: 604dcae21fbcddd83afd
+    ports:
+      - "5432:5432"
+
+volumes:
+  pgdata:
