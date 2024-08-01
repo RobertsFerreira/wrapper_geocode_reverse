@@ -1,11 +1,8 @@
-import os
-
 import pytest
 from fastapi.testclient import TestClient
-from geoalchemy2 import load_spatialite
+from geoalchemy2.functions import ST_DWithin, ST_GeogFromText
 from pydantic_extra_types.coordinate import Coordinate, Latitude, Longitude
-from sqlalchemy import StaticPool, create_engine, select
-from sqlalchemy.event import listen
+from sqlalchemy import create_engine, select
 from sqlalchemy.orm import Session
 
 from wrapper_geocode_reverse.app import app
@@ -50,23 +47,25 @@ def params_test_location(settings: Settings, coordinate: Coordinate):
 
 
 @pytest.fixture()
-def session():
-    engine = create_engine(
-        'sqlite:///:memory:',
-        connect_args={'check_same_thread': False},
-        poolclass=StaticPool,
-    )
+def session(settings: Settings):
+    # engine = create_engine(
+    #     'sqlite:///:memory:',
+    #     connect_args={'check_same_thread': False},
+    #     poolclass=StaticPool,
+    # )
 
-    base_path = 'E:\\ProjetosPY\\wrapper_geocode_reverse'
-    path = f'{base_path}\\plugins\\spatialite\\mod_spatialite.dll'
+    # base_path = 'E:\\ProjetosPY\\wrapper_geocode_reverse'
+    # path = f'{base_path}\\plugins\\spatialite\\mod_spatialite.dll'
 
-    os.environ['SPATIALITE_LIBRARY_PATH'] = path
+    # os.environ['SPATIALITE_LIBRARY_PATH'] = path
 
-    listen(engine, 'connect', load_spatialite)
+    # listen(engine, 'connect', load_spatialite)
+    engine = create_engine(settings.DATABASE_URL)
     table_registry.metadata.create_all(engine)
 
     with Session(engine) as session:
         yield session
+        session.rollback()
 
     table_registry.metadata.drop_all(engine)
 
@@ -74,7 +73,7 @@ def session():
 @pytest.fixture()
 def fixture_location_create(session):
     latitude, longitude = 1, 1
-    point = f'POINT({latitude} {longitude})'
+    point = ST_GeogFromText(f'POINT({latitude} {longitude})', srid=4326)
     new_location = LocationTable(
         address='address',
         latitude=1.0,
@@ -95,6 +94,8 @@ def fixture_location_create(session):
     session.commit()
 
     location = session.scalar(
-        select(LocationTable).where(LocationTable.latitude_longitude == point)
+        select(LocationTable).where(
+            ST_DWithin(LocationTable.latitude_longitude, point, 1000)
+        )
     )
     return location
