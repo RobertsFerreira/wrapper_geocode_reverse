@@ -31,4 +31,11 @@ def test_get_location_by_coordinates_on_bd(
         },
     )
 
+    location = response.json()[0]
+
+    lat = location['latitude']
+    long = location['longitude']
+
     assert response.status_code == HTTPStatus.OK
+    assert coordinate.latitude == lat
+    assert coordinate.longitude == long
