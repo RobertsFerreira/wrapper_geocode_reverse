@@ -9,7 +9,6 @@ from wrapper_geocode_reverse.app import app
 from wrapper_geocode_reverse.src.core import Settings, get_session
 from wrapper_geocode_reverse.src.location import (
     LocationTable,
-    table_registry,
 )
 
 
@@ -61,13 +60,13 @@ def session(settings: Settings):
 
     # listen(engine, 'connect', load_spatialite)
     engine = create_engine(settings.DATABASE_URL)
-    table_registry.metadata.create_all(engine)
+    # table_registry.metadata.create_all(engine)
 
     with Session(engine) as session:
         yield session
         session.rollback()
 
-    table_registry.metadata.drop_all(engine)
+    # table_registry.metadata.drop_all(engine)
 
 
 @pytest.fixture()
