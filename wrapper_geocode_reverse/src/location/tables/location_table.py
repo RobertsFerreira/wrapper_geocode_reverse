@@ -37,7 +37,12 @@ class LocationTable:
     )
 
     address: Mapped[str]
+    house_number: Mapped[str]
     city: Mapped[str]
     state: Mapped[str]
+    abbreviation_state: Mapped[str]
     country: Mapped[str]
+    abbreviation_country: Mapped[str]
     postal_code: Mapped[str]
+    distance: Mapped[float]
+    confidence: Mapped[float]

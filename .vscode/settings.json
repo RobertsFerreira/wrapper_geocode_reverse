@@ -10,6 +10,7 @@
         "levelname",
         "Mirahmedov",
         "onupdate",
+        "poolclass",
         "postalcode",
         "pydantic",
         "respx",

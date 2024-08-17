@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 from pydantic_extra_types.coordinate import Latitude, Longitude
 
 
@@ -18,6 +18,10 @@ class LocationServiceModel(BaseModel):
 
 
 class Location(BaseModel):
+    model_config = ConfigDict(
+        from_attributes=True,
+    )
+
     address: str
     house_number: str
     city: str

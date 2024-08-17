@@ -7,11 +7,11 @@ from httpx import Response
 from pydantic_extra_types.coordinate import Coordinate
 
 from tests.src.utils.data.fake_data import fake_location
-from wrapper_geocode_reverse.src.core.settings.settings import (
+from wrapper_geocode_reverse.src.core import (
     Settings,
     get_settings,
 )
-from wrapper_geocode_reverse.src.location.services.location_service import (
+from wrapper_geocode_reverse.src.location import (
     LocationService,
 )
 
