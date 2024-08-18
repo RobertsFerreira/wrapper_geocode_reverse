@@ -26,6 +26,7 @@ class LocationService:
         self,
         coordinate: Coordinate,
         number_of_points: int = 1,
+        min_confidence: float = 0.8,
     ) -> list[LocationServiceModel]:
         params = {
             'api_key': self.API_KEY,
@@ -42,18 +43,18 @@ class LocationService:
                 params=params,
             )
             if response.status_code != HTTPStatus.OK:
-                raise Exception(
-                    f'Error fetching data from OpenRouter API: {
-                        response.status_code
-                    }'
-                )
+                response.raise_for_status()
             open_router_response: dict[str, Any] = response.json()
             if 'features' not in open_router_response.keys():
-                self.logger.error('Error get features from OpenRouter')
+                self.logger.error('Error get key "features" from OpenRouter')
+                raise KeyError('Error fetching key "features" from OpenRouter')
             features: List[dict[str, Any]] = open_router_response['features']
             for feature in features:
                 if 'properties' not in feature.keys():
-                    raise Exception('Error get proprieties of location')
+                    self.logger.error(
+                        'Error get key "proprieties" of location'
+                    )
+                    raise KeyError('Error get key "proprieties" of location')
                 propriety_location = feature.get('properties')
 
                 location = LocationServiceModel.model_validate(
@@ -62,10 +63,12 @@ class LocationService:
 
                 geometry = feature.get('geometry')
                 if geometry is None:
-                    raise Exception('Error get geometry of location')
+                    self.logger.error('Error get geometry of location')
+                    raise ValueError('Error get geometry of location')
                 location_coordinates = geometry.get('coordinates')
                 if not location_coordinates:
-                    raise Exception('Error get coordinates of location')
+                    self.logger.error('Error get coordinates of location')
+                    raise ValueError('Error get coordinates of location')
 
                 location = location.model_copy(
                     update={
