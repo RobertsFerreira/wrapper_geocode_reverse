@@ -70,7 +70,23 @@ def session(settings: Settings):
 
 
 @pytest.fixture()
-def fixture_location_create(session):
+def fixture_location_create(session, location_table_model):
+    session.add(location_table_model)
+    session.commit()
+
+    latitude, longitude = 1, 1
+    point_sql = ST_GeogFromText(f'POINT({latitude} {longitude})', srid=4326)
+
+    location = session.scalar(
+        select(LocationTable).where(
+            ST_DWithin(LocationTable.latitude_longitude, point_sql, 1000)
+        )
+    )
+    return location
+
+
+@pytest.fixture()
+def location_table_model():
     latitude, longitude = 1, 1
     point = f'POINT({latitude} {longitude})'
     new_location = LocationTable(
@@ -89,14 +105,4 @@ def fixture_location_create(session):
         distance=0.0,
     )
 
-    session.add(new_location)
-    session.commit()
-
-    point_sql = ST_GeogFromText(f'POINT({latitude} {longitude})', srid=4326)
-
-    location = session.scalar(
-        select(LocationTable).where(
-            ST_DWithin(LocationTable.latitude_longitude, point_sql, 1000)
-        )
-    )
-    return location
+    return new_location

@@ -11,7 +11,7 @@ def configure_log():
         path.mkdir(parents=True)
 
     logging.basicConfig(
-        level=logging.DEBUG,
+        level=logging.INFO,
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
         filename=f'{path_log}\\wrapper_geocode.log',
         filemode='a',

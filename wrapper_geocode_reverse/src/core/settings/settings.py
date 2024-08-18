@@ -1,5 +1,7 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+from wrapper_geocode_reverse.src.core.logger.logger import logger
+
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
@@ -24,6 +26,5 @@ class Settings(BaseSettings):
 
 def get_settings():
     settings = Settings()  # type: ignore
-    # Todo: change print for logging
-    # print(settings)
+    logger.debug('Loading settings')
     return settings
