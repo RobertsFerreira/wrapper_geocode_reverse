@@ -26,6 +26,7 @@ class LocationService:
         self,
         coordinate: Coordinate,
         number_of_points: int = 1,
+        min_confidence: float = 0.8,
     ) -> list[LocationServiceModel]:
         params = {
             'api_key': self.API_KEY,
