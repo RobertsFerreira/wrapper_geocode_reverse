@@ -41,7 +41,7 @@ def get_location_by_latitude_longitude(
 
     totally_locations = session.execute(statement_totally_locations).all()
 
-    match(totally_locations):
+    match totally_locations:
         case []:
             return None
         case ('num_locations', total) if total < 0:
@@ -49,7 +49,7 @@ def get_location_by_latitude_longitude(
         case _:
             logger.error(
                 'Invalid result for number of totally locations found: %s',
-                  totally_locations
+                totally_locations,
             )
 
     statement = (
