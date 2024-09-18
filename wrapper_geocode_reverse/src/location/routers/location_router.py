@@ -1,15 +1,17 @@
+import hashlib
 from http import HTTPStatus
 from typing import List
 
-from fastapi import APIRouter, BackgroundTasks, Depends, Request
+from fastapi import APIRouter, BackgroundTasks, Depends, Request, Response
 from fastapi.responses import RedirectResponse
 from geoalchemy2.functions import ST_GeogFromText
 from pydantic import PositiveFloat, PositiveInt
 from pydantic_extra_types.coordinate import Coordinate, Latitude, Longitude
 from sqlalchemy.orm import Session
 
-from wrapper_geocode_reverse.src.core import get_session
-from wrapper_geocode_reverse.src.core.logger.logger import logger
+from wrapper_geocode_reverse.src.core.cache import SimpleCache
+from wrapper_geocode_reverse.src.core import get_session, logger
+from wrapper_geocode_reverse.src.core.measure import measure_time
 
 from ..controllers.location_controller import (
     get_location_by_latitude_longitude,
@@ -22,12 +24,16 @@ location_router = APIRouter()
 
 log = logger.getLogger(__name__)
 
+cache = SimpleCache()
+
 
 @location_router.get('/', response_model=List[Location])
+@measure_time
 async def get_location_by_lat_long(
     lat: Latitude,
     long: Longitude,
     request: Request,
+    response: Response,
     number_points: int = 1,
     min_confidence: PositiveFloat = 0.8,
     km_within: PositiveInt = 10,
@@ -40,6 +46,28 @@ async def get_location_by_lat_long(
     point = ST_GeogFromText(
         f'POINT({coordinate.latitude} {coordinate.longitude})', srid=4326
     )
+
+    key = f'{point}{min_confidence}{number_points}{km_distance}'
+    logger.debug('Cached key %s', key)
+
+    TTL = 3600  # cache for 1 hour
+
+    cached_locations = cache.get(key)
+
+    if cached_locations:
+        etag = hashlib.md5(str(cached_locations).encode()).hexdigest()
+        logger.debug('Etag: %s', etag)
+
+        if_none_match = request.headers['if_none_match']
+
+        if if_none_match == etag:
+            logger.debug('Not modified')
+            response.status_code = HTTPStatus.NOT_MODIFIED
+
+        response.headers['Cache-Control'] = f'public, max-age={TTL}'
+
+        logger.debug('Retrieved locations from cache')
+        return cached_locations
 
     locations = get_location_by_latitude_longitude(
         session=session,
@@ -55,17 +83,21 @@ async def get_location_by_lat_long(
 
         log.warning(msg)
 
-        log.info(
-            'redirect url to get_location_by_lat_long_in_api',
-        )
+        log.info('redirected request')
+        url = 'get_location_by_lat_long_in_api'
+
+        log.debug('redirected request to url %s', url)
+
         return RedirectResponse(
-            request.url_for(
-                'get_location_by_lat_long_in_api'
-            ).include_query_params(**request.query_params),
+            request.url_for(url).include_query_params(**request.query_params),
             status_code=HTTPStatus.SEE_OTHER,
         )
 
     locations_db = [Location.model_validate(loc) for loc in locations]
+
+    logger.info('Location cached for {TTL} seconds')
+    cache.set(key, locations_db, ttl=TTL)
+
     return locations_db
 
 
