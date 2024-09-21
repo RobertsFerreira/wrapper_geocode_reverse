@@ -12,11 +12,13 @@
         "onupdate",
         "poolclass",
         "postalcode",
+        "psycopg",
         "pydantic",
         "respx",
         "spatialite",
         "sqlalchemy",
-        "sqlite"
+        "sqlite",
+        "testcontainers"
     ],
     "python.analysis.extraPaths": [
         "./wrapper_geocode_reverse/src/core/logger"
