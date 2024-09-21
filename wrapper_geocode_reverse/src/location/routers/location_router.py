@@ -65,6 +65,7 @@ async def get_location_by_lat_long(
             response.status_code = HTTPStatus.NOT_MODIFIED
 
         response.headers['Cache-Control'] = f'public, max-age={TTL}'
+        response.headers['ETag'] = etag
 
         logger.debug('Retrieved locations from cache')
         return cached_locations
