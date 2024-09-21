@@ -17,4 +17,5 @@ def measure_time(func: Callable):
         info = f'{func_info}: {time_info}'
         logger.info(info)
         return result
+
     return wrapper

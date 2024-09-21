@@ -4,12 +4,11 @@ from geoalchemy2.functions import ST_DWithin, ST_GeogFromText
 from pydantic_extra_types.coordinate import Coordinate, Latitude, Longitude
 from sqlalchemy import create_engine, select
 from sqlalchemy.orm import Session
+from testcontainers.postgres import PostgresContainer
 
 from wrapper_geocode_reverse.app import app
 from wrapper_geocode_reverse.src.core import Settings, get_session
-from wrapper_geocode_reverse.src.location import (
-    LocationTable,
-)
+from wrapper_geocode_reverse.src.location import LocationTable, table_registry
 
 
 @pytest.fixture()
@@ -45,28 +44,25 @@ def params_test_location(settings: Settings, coordinate: Coordinate):
     }
 
 
+@pytest.fixture(scope='session')
+def engine():
+    with PostgresContainer(
+        'postgis/postgis:16-3.4', driver='psycopg',
+    ) as postgis:
+        _engine = create_engine(postgis.get_connection_url())
+        with _engine.begin():
+            yield _engine
+
+
 @pytest.fixture()
-def session(settings: Settings):
-    # engine = create_engine(
-    #     'sqlite:///:memory:',
-    #     connect_args={'check_same_thread': False},
-    #     poolclass=StaticPool,
-    # )
-
-    # base_path = 'E:\\ProjetosPY\\wrapper_geocode_reverse'
-    # path = f'{base_path}\\plugins\\spatialite\\mod_spatialite.dll'
-
-    # os.environ['SPATIALITE_LIBRARY_PATH'] = path
-
-    # listen(engine, 'connect', load_spatialite)
-    engine = create_engine(settings.DATABASE_URL)
-    # table_registry.metadata.create_all(engine)
+def session(engine):
+    table_registry.metadata.create_all(engine)
 
     with Session(engine) as session:
         yield session
         session.rollback()
 
-    # table_registry.metadata.drop_all(engine)
+    table_registry.metadata.drop_all(engine)
 
 
 @pytest.fixture()

@@ -9,8 +9,8 @@ from pydantic import PositiveFloat, PositiveInt
 from pydantic_extra_types.coordinate import Coordinate, Latitude, Longitude
 from sqlalchemy.orm import Session
 
-from wrapper_geocode_reverse.src.core.cache import SimpleCache
 from wrapper_geocode_reverse.src.core import get_session, logger
+from wrapper_geocode_reverse.src.core.cache import SimpleCache
 from wrapper_geocode_reverse.src.core.measure import measure_time
 
 from ..controllers.location_controller import (
