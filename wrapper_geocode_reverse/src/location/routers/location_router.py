@@ -26,9 +26,8 @@ log = logger.getLogger(__name__)
 
 cache = SimpleCache()
 
-
-@location_router.get('/', response_model=List[Location])
 @measure_time
+@location_router.get('/', response_model=List[Location])
 async def get_location_by_lat_long(
     lat: Latitude,
     long: Longitude,
