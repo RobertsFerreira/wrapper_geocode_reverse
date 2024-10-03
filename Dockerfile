@@ -1,4 +1,4 @@
-FROM python: 3.12-slim
+FROM python:3.12-slim
 ENV POETRY_VIRTUALENVS_CREATE=false
 
 WORKDIR app/
@@ -10,5 +10,5 @@ RUN poetry config installer.max-workers 10
 
 RUN poetry install --no-interaction --no-ansi
 
-EXPOSE 8000
+EXPOSE 8080
 CMD poetry run fastapi run wrapper_geocode_reverse/app.py
