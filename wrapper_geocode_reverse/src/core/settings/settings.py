@@ -11,7 +11,6 @@ class Settings(BaseSettings):
     )
 
     DATABASE_URL: str
-    SPATIALITE_DLL_URL: str
     OPEN_ROUTER_TOKEN: str
     OPEN_ROUTER_GEOCODE_REVERSE_URL: str
 
@@ -19,7 +18,6 @@ class Settings(BaseSettings):
         return f"""
                     Settings(
                         DATABASE_URL={self.DATABASE_URL},
-                        SpatIALITE_DLL_URL={self.SPATIALITE_DLL_URL},
                         OPEN_ROUTER_GEOCODE_REVERSE_URL={self.OPEN_ROUTER_GEOCODE_REVERSE_URL}
                         )
                     """
