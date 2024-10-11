@@ -13,7 +13,7 @@ def measure_time(func: Callable):
         end_time = time.perf_counter()
         execution_time = end_time - start_time
         func_info = f'Function "{func.__name__}"'
-        time_info = f'executed in {execution_time:.6f} seconds'
+        time_info = f'executed in {execution_time:.2f} ms'
         info = f'{func_info}: {time_info}'
         logger.info(info)
         return result

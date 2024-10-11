@@ -20,6 +20,9 @@ from ..controllers.location_controller import (
 from ..schemas.location_schema import Location, LocationServiceModel
 from ..services.location_service import LocationService, get_service
 
+
+TTL = 3600  # cache for 1 hour
+
 location_router = APIRouter()
 
 log = logger.getLogger(__name__)
@@ -27,6 +30,27 @@ log = logger.getLogger(__name__)
 cache = SimpleCache()
 
 @measure_time
+def search_cache(key: str, request: Request, response: Response):
+
+    cached_locations = cache.get(key)
+
+    if cached_locations:
+        etag = hashlib.md5(str(cached_locations).encode()).hexdigest()
+        logger.debug('Etag: %s', etag)
+
+        if_none_match = request.headers.get('if_none_match', None)
+
+        if if_none_match == etag:
+            logger.debug('Not modified')
+            response.status_code = HTTPStatus.NOT_MODIFIED
+
+        response.headers['Cache-Control'] = f'public, max-age={TTL}'
+        response.headers['ETag'] = etag
+
+        logger.debug('Retrieved locations from cache')
+        return cached_locations
+    return None
+
 @location_router.get('/', response_model=List[Location])
 async def get_location_by_lat_long(
     lat: Latitude,
@@ -49,25 +73,10 @@ async def get_location_by_lat_long(
     key = f'{point}{min_confidence}{number_points}{km_distance}'
     logger.debug('Cached key %s', key)
 
-    TTL = 3600  # cache for 1 hour
+    location_cached = search_cache(key=key, request=request, response=response)
 
-    cached_locations = cache.get(key)
-
-    if cached_locations:
-        etag = hashlib.md5(str(cached_locations).encode()).hexdigest()
-        logger.debug('Etag: %s', etag)
-
-        if_none_match = request.headers['if_none_match']
-
-        if if_none_match == etag:
-            logger.debug('Not modified')
-            response.status_code = HTTPStatus.NOT_MODIFIED
-
-        response.headers['Cache-Control'] = f'public, max-age={TTL}'
-        response.headers['ETag'] = etag
-
-        logger.debug('Retrieved locations from cache')
-        return cached_locations
+    if location_cached:
+        return location_cached
 
     locations = get_location_by_latitude_longitude(
         session=session,
@@ -95,7 +104,7 @@ async def get_location_by_lat_long(
 
     locations_db = [Location.model_validate(loc) for loc in locations]
 
-    logger.info('Location cached for {TTL} seconds')
+    logger.info('Location cached for %s seconds', TTL)
     cache.set(key, locations_db, ttl=TTL)
 
     return locations_db

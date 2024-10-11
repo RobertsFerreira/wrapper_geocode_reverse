@@ -18,7 +18,8 @@
         "spatialite",
         "sqlalchemy",
         "sqlite",
-        "testcontainers"
+        "testcontainers",
+        "watchfiles"
     ],
     "python.analysis.extraPaths": [
         "./wrapper_geocode_reverse/src/core/logger"
