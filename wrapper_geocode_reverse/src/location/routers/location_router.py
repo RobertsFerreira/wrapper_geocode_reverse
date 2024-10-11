@@ -86,7 +86,7 @@ async def get_location_by_lat_long(
         km_distance=km_distance,
     )
 
-    if locations is None:
+    if not locations:
         msg = f'No locations found for coordinates ({coordinate.latitude}'
         msg = f'{msg} {coordinate.longitude}) within {km_within} km.'
 
