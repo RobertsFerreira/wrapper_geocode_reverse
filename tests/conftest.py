@@ -47,7 +47,8 @@ def params_test_location(settings: Settings, coordinate: Coordinate):
 @pytest.fixture(scope='session')
 def engine():
     with PostgresContainer(
-        'postgis/postgis:16-3.4', driver='psycopg',
+        'postgis/postgis:16-3.4',
+        driver='psycopg',
     ) as postgis:
         _engine = create_engine(postgis.get_connection_url())
         with _engine.begin():
