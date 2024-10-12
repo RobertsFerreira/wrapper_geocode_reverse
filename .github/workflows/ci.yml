@@ -1,0 +1,33 @@
+name: Pipeline Teste
+on:
+  push:
+    branches: ["master"]
+  pull_request:
+    branches: ["master"]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    env:
+      DATABASE_URL: ${{secrets.DATABASE_URL}}
+      OPEN_ROUTER_TOKEN: ${{secrets.OPEN_ROUTER_TOKEN}}
+      OPEN_ROUTER_GEOCODE_REVERSE_URL: ${{secrets.OPEN_ROUTER_GEOCODE_REVERSE_URL}}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Poetry
+        run: pipx install poetry
+
+      - name: Install dependencies
+        run: poetry install
+
+      - name: Run tests
+        run: poetry run task test
