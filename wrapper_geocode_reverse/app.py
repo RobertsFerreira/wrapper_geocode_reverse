@@ -1,8 +1,7 @@
-import time
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 
-from wrapper_geocode_reverse.src.routers.router import base_router
 from wrapper_geocode_reverse.src.core import logger
+from wrapper_geocode_reverse.src.routers.router import base_router
 
 logger.getLogger('watchfiles.main').setLevel(logger.CRITICAL)
 

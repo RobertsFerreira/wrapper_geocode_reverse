@@ -10,6 +10,7 @@
         "levelname",
         "Mirahmedov",
         "onupdate",
+        "pipx",
         "poolclass",
         "postalcode",
         "psycopg",

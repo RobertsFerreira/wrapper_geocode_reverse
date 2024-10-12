@@ -20,7 +20,6 @@ from ..controllers.location_controller import (
 from ..schemas.location_schema import Location, LocationServiceModel
 from ..services.location_service import LocationService, get_service
 
-
 TTL = 3600  # cache for 1 hour
 
 location_router = APIRouter()
@@ -29,9 +28,9 @@ log = logger.getLogger(__name__)
 
 cache = SimpleCache()
 
+
 @measure_time
 def search_cache(key: str, request: Request, response: Response):
-
     cached_locations = cache.get(key)
 
     if cached_locations:
@@ -50,6 +49,7 @@ def search_cache(key: str, request: Request, response: Response):
         logger.debug('Retrieved locations from cache')
         return cached_locations
     return None
+
 
 @location_router.get('/', response_model=List[Location])
 async def get_location_by_lat_long(
